@@ -1,8 +1,33 @@
 console.log('JS');
 
+class Message {
+    constructor(from, message) {
+        this.from = from;
+        this.message = message;
+    } //end constructor
+}//end message class
+
+
 $(document).ready(function (){
     getMessages();
-
+    $('#addMessageButton').on('click', function(){
+        console.log('in addMessageButton on click');
+        //get user input
+        //create an object with input
+        let objectToSend = new Message($('#fromIn').val(), $('#messageIn').val());
+        console.log('sending: ', objectToSend);
+        
+        //make a POST call via ajax
+        $.ajax({
+            method: 'POST',
+            url: '/messages',
+            data: 'objectToSend',
+            success: function(response){
+                console.log('back from post with:', response);
+                getMessages();
+            } //end success function
+        }); //end ajax
+    }); //end addMessage function
 }); //end doc ready
 
 function displayMessages (messages) {
